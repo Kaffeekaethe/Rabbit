@@ -17,7 +17,6 @@ ADD startrabbit.sh /opt/rabbit/
 
 RUN chmod a+x /opt/rabbit/startrabbit.sh
 
-
 EXPOSE 5672
 EXPOSE 15672
 EXPOSE 25672
