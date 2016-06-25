@@ -1,31 +1,50 @@
-rabbit1:
-  image: bijukunjummen/rabbitmq-server
-  hostname: rabbit1
-  ports:
-    - "5672:5672"
+version: '2'
+services:
+  bookingroot:
+    image: bachelorproject/rabbitcluster:latest
+    hostname: bookingroot
+    restart: "unless-stopped"
+    environment:
+    - SERVICE=booking
+    ports:
     - "15672:15672"
-
-rabbit2:
-  image: bijukunjummen/rabbitmq-server
-  hostname: rabbit2
-  links:
-    - rabbit1
-  environment: 
-   - CLUSTERED=true
-   - CLUSTER_WITH=rabbit1
-   - RAM_NODE=true
-  ports:
-      - "5673:5672"
-      - "15673:15672"
-
-rabbit3:
-  image: bijukunjummen/rabbitmq-server
-  hostname: rabbit3
-  links:
-    - rabbit1
-    - rabbit2
-  environment: 
-   - CLUSTERED=true
-   - CLUSTER_WITH=rabbit1   
-  ports:
-        - "5674:5672"
+  customermanagementroot:
+    image: bachelorproject/rabbitcluster:latest
+    hostname: customermanagementroot
+    restart: "unless-stopped"
+    environment:
+    - SERVICE=customermanagement
+    ports:
+    - "15673:15672"
+  pricingroot:
+    image: bachelorproject/rabbitcluster:latest
+    hostname: pricingroot
+    environment:
+    - SERVICE=pricing
+    restart: "unless-stopped"
+    environment:
+    - SERVICE=pricing
+    ports:
+    - "15674:15672"
+  seatoverviewroot:
+    image: bachelorproject/rabbitcluster:latest
+    hostname: seatoverviewroot
+    environment:
+    - SERVICE=seatoverview
+    restart: "unless-stopped"
+    environment:
+    - SERVICE=seatoverview
+    ports:
+    - "15675:15672"
+  seatmanagementroot:
+    image: bachelorproject/rabbitcluster:latest
+    hostname: seatmanagementroot
+    environment:
+    - SERVICE=seatmanagement
+    restart: "unless-stopped"
+    ports:
+    - "15676:15672"
+networks:
+  default:
+    external:
+       name: reservierung
